@@ -3,14 +3,14 @@
 //--------------------------------------
 
 #define TB_TIME_DEPTH			1	// # depth levels, each level is a uint32 that overflows into the next
-#define TB_OBSERVATION_TIME_GAP		1	// How many time ticks to skip before redrawing screen
+#define TB_OBSERVATION_TIME_GAP		10	// How many time ticks to skip before redrawing screen
 
 #define TB_PARTICLE_DATA_SIZE 		1	// bytes of information per point in space
 
-#define TB_SPACE_SIZE_X 		10	// X resolution of space
-#define TB_SPACE_SIZE_Y 		10	// Y resolution of space
+#define TB_SPACE_SIZE_X 		280	// X resolution of space
+#define TB_SPACE_SIZE_Y 		80	// Y resolution of space
 
-#define TB_PRINT_CLEAR_SCREEN		0	// 1=clear screen before each draw, 0=no clear just draw
+#define TB_PRINT_CLEAR_SCREEN		1	// 1=clear screen before each draw, 0=no clear just draw
 
 
 

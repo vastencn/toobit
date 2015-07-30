@@ -7,10 +7,10 @@
 
 #define TB_PARTICLE_DATA_SIZE 		1	// bytes of information per point in space
 
-#define TB_SPACE_SIZE_X 		100	// X resolution of space
-#define TB_SPACE_SIZE_Y 		100	// Y resolution of space
+#define TB_SPACE_SIZE_X 		280	// X resolution of space
+#define TB_SPACE_SIZE_Y 		80	// Y resolution of space
 
-#define TB_PRINT_CLEAR_SCREEN		0	// 1=clear screen before each draw, 0=no clear just draw
+#define TB_PRINT_CLEAR_SCREEN		1	// 1=clear screen before each draw, 0=no clear just draw
 
 
 

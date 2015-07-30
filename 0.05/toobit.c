@@ -15,14 +15,13 @@
 
 struct toobit_space the_universe;
 
-
 //--------------------------------------
 //		game_of_life_rules_3row ()
 //	x/y = x,y cords
 //	t = output target pointer
 //	n = # of neighbours
 //--------------------------------------
-void game_of_life_rules_3row( struct toobit_space* in_u, char *r0, char *r1, char *r2 , unsigned int self){
+void game_of_life_rules_3row( struct toobit_space* in_u, TB_PARTICLE_TYPE *r0, TB_PARTICLE_TYPE *r1, TB_PARTICLE_TYPE *r2, unsigned int self){
   int n=0;
 
   if(r0[0]==GOL_FILLED_CHAR)n++;

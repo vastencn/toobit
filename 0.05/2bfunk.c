@@ -2,8 +2,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-
 #include <toobit.h>
+
+#if TB_SPEED_TEST == 1
+	#include <sys/time.h>
+#endif
+
 
 //needs tmp 2 byte optimization
 //-----------------------------------------------
@@ -21,16 +25,16 @@
 //		r1[1] = self value
 //		self = space element id of self
 //-----------------------------------------------
-void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*funk_ptr)(struct toobit_space*, char *, char *, char *, unsigned int)){
+void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int)){
   unsigned int x,y,yoff,xoff;
-  char empty_row[3]={0,0,0};
-  char partial_row1[3], partial_row2[3], partial_row3[3];
+  TB_PARTICLE_TYPE empty_row[3]={0,0,0};
+  TB_PARTICLE_TYPE partial_row1[3], partial_row2[3], partial_row3[3];
 
   #if TB_PARTICLE_DATA_SIZE == 1
- 	 uint16_t 	*p_row1_0=(uint16_t *)partial_row1,
-			*p_row1_1=(uint16_t *)(partial_row1+1),
-  	 		*p_row2_0=(uint16_t *)partial_row2,
-			*p_row2_1=(uint16_t *)(partial_row2+1); 
+ 	 uint_fast16_t 	*p_row1_0=(uint_fast16_t *)partial_row1,
+			*p_row1_1=(uint_fast16_t *)(partial_row1+1),
+  	 		*p_row2_0=(uint_fast16_t *)partial_row2,
+			*p_row2_1=(uint_fast16_t *)(partial_row2+1); 
   #endif
 
   /////////////////////////////////////////////////////////////////////////
@@ -38,9 +42,9 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
   	//----do the top left corner 
 	#if TB_PARTICLE_DATA_SIZE == 1
 		partial_row1[0]=0;
-		*p_row1_1=*(uint16_t *)((*in_u).space);
+		*p_row1_1=*(uint_fast16_t *)((*in_u).space);
 		partial_row2[0]=0;
-		*p_row2_1=*(uint16_t *)((*in_u).space+TB_SPACE_ROW_DATA_SIZE);
+		*p_row2_1=*(uint_fast16_t *)((*in_u).space+TB_SPACE_ROW_DATA_SIZE);
 	#else
 		partial_row1[0]=0;
 		partial_row1[1]=(*in_u).space[0];
@@ -55,7 +59,7 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 	//----do up to second last colum in first row
 	x=TB_SPACE_X_LAST;
 	while(--x){
-	  funk_ptr(in_u,empty_row,(*in_u).space+x-1,(*in_u).space+x-TB_PARTICLE_DATA_SIZE+TB_SPACE_ROW_DATA_SIZE,x);
+	  funk_ptr(in_u,empty_row,(*in_u).space+x-TB_PARTICLE_DATA_SIZE,(*in_u).space+x-TB_PARTICLE_DATA_SIZE+TB_SPACE_ROW_DATA_SIZE,x);
 	  }	
 	//----end at second last colum of first row
 	//*****************************************************************
@@ -138,7 +142,7 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 	  //xoff=TB_SPACE_UNIVERSE_LAST_ROW;
 	  funk_ptr(in_u,
 		(*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x-TB_PARTICLE_DATA_SIZE-TB_SPACE_ROW_DATA_SIZE,
-		(*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x-1,
+		(*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x-TB_PARTICLE_DATA_SIZE,
 		empty_row,
 		x+TB_SPACE_UNIVERSE_LAST_ROW);
 	  }	
@@ -193,9 +197,9 @@ void tb_time_ticker_xy( struct toobit_space* in_u, unsigned int tc, void (*funk_
 // 				tb_heat_death()
 // Clear all space to byte value c
 //-----------------------------------------------
-void tb_heat_death( struct toobit_space* in_u , char c){
-  memset((*in_u).space,c,TB_SPACE_UNIVERSE_DATA_SIZE);
-  memset((*in_u).space_next,c,TB_SPACE_UNIVERSE_DATA_SIZE);
+void tb_heat_death( struct toobit_space* in_u , TB_PARTICLE_TYPE s){
+  memset((*in_u).space,s,TB_SPACE_UNIVERSE_DATA_SIZE);
+  memset((*in_u).space_next,s,TB_SPACE_UNIVERSE_DATA_SIZE);
   return;
   }
 
@@ -207,11 +211,10 @@ void tb_heat_death( struct toobit_space* in_u , char c){
 //	d=diameter	ex=empty shell width x
 //	ey=empty shell width y
 //-----------------------------------------------
-void tb_big_bang( struct toobit_space* in_u , unsigned int r, char s){
+void tb_big_bang( struct toobit_space* in_u , unsigned int r, TB_PARTICLE_TYPE s){
   unsigned int d=r<<=1,ey=(TB_SPACE_SIZE_Y-d)>>1, ex=(TB_SPACE_SIZE_X-d)>>1;
-  char *space_ptr=((*in_u).space)+ey*TB_SPACE_SIZE_X+ex, *end_ptr;
+  char *space_ptr=((*in_u).space)+ey*TB_SPACE_SIZE_X+ex;
   while(r--){
-    end_ptr=space_ptr+d;
     memset(space_ptr,s,d);
     space_ptr+=TB_SPACE_SIZE_X;
     }
@@ -292,6 +295,7 @@ void tb_print_space_quarter_byte( struct toobit_space* in_u ){
 // reset time counter
 // *only available if timekeeping is on
 //-----------------------------------------------
+////not done
 #if TB_KEEP_TIME == 1
   void tb_reset_time( struct toobit_space* in_u ){
     memset((char *)(*in_u).time,0,sizeof(int)*TB_TIME_DEPTH);
@@ -305,8 +309,25 @@ void tb_print_space_quarter_byte( struct toobit_space* in_u ){
 // speed test the xy time ticker using
 // given physics rules
 //-----------------------------------------------
+/////not done
 #if TB_SPEED_TEST == 1
-  void tb_speed_test_xy( struct toobit_space* in_u, void (*funk_ptr)(struct toobit_space*, unsigned int, unsigned int )){
+  void tb_speed_test_xy(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, unsigned int, unsigned int )){
+    struct toobit_space tmp_universe;
+    struct timeval tv1,tv2;
+    time_t now;
+ 
+    memcpy(tmp_universe.space,(*in_u).space,TB_SPACE_UNIVERSE_DATA_SIZE);
+
+    switch(mode){
+      case TB_SPEED_TEST_DEFAULT_MODE:
+        gettimeofday(&tv1,NULL);
+        while(n1--){
+          tb_time_ticker_xy(&tmp_universe, n2, funk_ptr);
+          }
+        gettimeofday(&tv2,NULL); 
+	break;
+      }
+
     return;
     }
 #endif
