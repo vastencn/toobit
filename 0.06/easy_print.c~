@@ -31,7 +31,7 @@ void tb_print_space_one_byte( struct toobit_space* in_u ){
 //  using the first byte of data as a character.
 // ******REQUIRES INNER LOOP OPTIMIZATION*********
 //-----------------------------------------------
-void tb_print_space_quarter_byte_match( struct toobit_space* in_u , char match_char){
+void tb_print_space_quarter_byte( struct toobit_space* in_u ){
   unsigned int y=TB_SPACE_SIZE_Y>>1,x,offset;
   char pstring[(TB_SPACE_SIZE_X+5)],bc, 
 	c_one   = (*in_u).four_bytes[0], 
@@ -46,11 +46,11 @@ void tb_print_space_quarter_byte_match( struct toobit_space* in_u , char match_c
     while(x--){
       bc=0;
       offset=((y<<1)*TB_SPACE_SIZE_X)+(x<<1);
-      if((*in_u).space[offset]==match_char)bc++;
-      if((*in_u).space[offset+1]==match_char)bc++;
+      if((*in_u).space[offset]==42)bc++;
+      if((*in_u).space[offset+1]==42)bc++;
       offset+=TB_SPACE_SIZE_X;
-      if((*in_u).space[offset]==match_char)bc++;
-      if((*in_u).space[offset+1]==match_char)bc++;
+      if((*in_u).space[offset]==42)bc++;
+      if((*in_u).space[offset+1]==42)bc++;
       if(bc==1){
 	pstring[x]=c_one;
 	}else if(bc==2){

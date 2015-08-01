@@ -14,7 +14,7 @@
 //		r1[1] = self value
 //		self = space element id of self
 //-----------------------------------------------
-void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int)){
+void tb_time_ticker_3ptr( struct toobit_space* in_u, unsigned int tc, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int)){
   unsigned int x,y,yoff,xoff;
   TB_PARTICLE_TYPE empty_row[3]={0,0,0};
   TB_PARTICLE_TYPE partial_row1[3], partial_row2[3], partial_row3[3];
@@ -106,10 +106,10 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 	  xoff=yoff;
 	  while(--x){
 	    funk_ptr(in_u,
-		(*in_u).space+xoff-TB_SPACE_ROW_DATA_SIZE,
-		(*in_u).space+xoff,
-		(*in_u).space+xoff+TB_SPACE_ROW_DATA_SIZE,
-		xoff+TB_PARTICLE_DATA_SIZE);
+		(*in_u).space+(xoff-TB_SPACE_ROW_DATA_SIZE_PLUS_ONE),
+		(*in_u).space+xoff-TB_PARTICLE_DATA_SIZE,
+		(*in_u).space+xoff+TB_SPACE_ROW_DATA_SIZE_MINUS_ONE,
+		xoff);
 	    xoff+=TB_PARTICLE_DATA_SIZE;  	  
 	    }
 	  //----end second last colum to second last colum
@@ -155,7 +155,7 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 	while(--x){
 	  //xoff=TB_SPACE_UNIVERSE_LAST_ROW;
 	  funk_ptr(in_u,
-		((*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x)-TB_SPACE_ROW_DATA_SIZE_MINUS_ONE,   ///warning..needs fix to increase data size
+		((*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x)-TB_SPACE_ROW_DATA_SIZE_PLUS_ONE,   ///warning..needs fix to increase data size
 		((*in_u).space+TB_SPACE_UNIVERSE_LAST_ROW+x)-TB_PARTICLE_DATA_SIZE,
 		empty_row,
 		x+TB_SPACE_UNIVERSE_LAST_ROW);

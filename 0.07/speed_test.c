@@ -39,8 +39,8 @@
 	puts("unknown mode!\n");
 	break;
       }
-    printf("Time %i seconds\n",s);
-    printf("Time %i microseconds\n",ms);   
+    printf("Time %lu seconds\n",s);
+    printf("Time %lu microseconds\n",ms);   
     printf("Ran test for %i cycles total\n",n1b*n2b); 
     printf("    %i Ticks %i Times\n",n1b,n2b);   
     printf("Universe Size %i\n",TB_SPACE_SIZE_XY);  
@@ -71,7 +71,7 @@ void tb_speed_test_3ptr(char mode, struct toobit_space* in_u, unsigned int n1, u
       case TB_SPEED_TEST_DEFAULT_MODE:
         gettimeofday(&tv1,NULL);
         while(n1--){
-          tb_time_ticker_3row(&tmp_universe, n2, funk_ptr);
+          tb_time_ticker_3ptr(&tmp_universe, n2, funk_ptr);
           }
         gettimeofday(&tv2,NULL); 
 	s=tv2.tv_sec-tv1.tv_sec;
@@ -89,8 +89,8 @@ void tb_speed_test_3ptr(char mode, struct toobit_space* in_u, unsigned int n1, u
 	puts("unknown mode!\n");
 	break;
       }
-    printf("Time %i seconds\n",s);
-    printf("Time %i microseconds\n",ms);   
+    printf("Time %lu seconds\n",s);
+    printf("Time %lu microseconds\n",ms);   
     printf("Ran test for %i cycles total\n",n1b*n2b); 
     printf("    %i Ticks %i Times\n",n2b,n1b);   
     printf("Universe Size %i\n",TB_SPACE_SIZE_XY);  

@@ -169,21 +169,22 @@ int main() {
 
 
 
+  tb_init_space(&the_universe);			//initialize struct
   tb_heat_death(&the_universe,GOL_EMPTY_CHAR);	//flatten the universe to a signle value
   tb_reset_time(&the_universe);			//Reset time to 1
 
-  tb_big_bang(&the_universe,10,GOL_FILLED_CHAR);	
+  tb_big_bang(&the_universe,25,GOL_FILLED_CHAR);	
 
-  tb_speed_test_xy(0, &the_universe, 1000, 1, &game_of_life_rules);
-  tb_speed_test_3ptr(0, &the_universe, 1000, 1, &game_of_life_rules_3row);
+  //tb_speed_test_xy(0, &the_universe, 100, 100, &game_of_life_rules);
+  //tb_speed_test_3ptr(0, &the_universe, 100, 100, &game_of_life_rules_3row);
 
-return;
+//return;
 
 int ix=100;
   while(1){				//----main loop
     r_val=random();			// prep a random number for general purpose
 
-    tb_print_space_quarter_byte(&the_universe);	//print space to the screen 
+    tb_print_space_quarter_byte_match(&the_universe,GOL_FILLED_CHAR);	//print space to the screen 
 
     if(next_bang--<1&&ix){
       ix--;						//"big-bomber"
@@ -192,7 +193,7 @@ int ix=100;
       }  
 
     //progress time (universe, # time ticks, pointer to physics function run at every point in space every tick)
-    tb_time_ticker_3row( &the_universe, TB_OBSERVATION_TIME_GAP, &game_of_life_rules_3row);
+    tb_time_ticker_3row( &the_universe, 1 , &game_of_life_rules_3row);
     usleep(60000);    
     }					//----end main loop
 

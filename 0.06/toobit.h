@@ -3,7 +3,7 @@
 //--------------------------------------
 
 #define TB_TIME_DEPTH			1	// # depth levels, each level is a uint32 that overflows into the next
-#define TB_OBSERVATION_TIME_GAP		1	// How many time ticks to skip before redrawing screen
+#define TB_OBSERVATION_TIME_GAP		100	// How many time ticks to skip before redrawing screen
 
 #define TB_PARTICLE_DATA_SIZE 		1	// bytes of information per point in space
 
@@ -43,7 +43,6 @@
 #define TB_SPACE_UNIVERSE_LAST_ROW_MINUS_ONE		TB_SPACE_UNIVERSE_LAST_ROW		-	TB_PARTICLE_DATA_SIZE
 #define TB_SPACE_UNIVERSE_LAST_ROW_MINUS_TWO		TB_SPACE_UNIVERSE_LAST_ROW_MINUS_ONE	-	TB_PARTICLE_DATA_SIZE
 #define TB_SPACE_UNIVERSE_SECOND_LAST_ROW		TB_SPACE_UNIVERSE_LAST_ROW		-	TB_SPACE_ROW_DATA_SIZE
-
 #define TB_SPACE_SIZE_X_MINUS_ONE			TB_SPACE_SIZE_X				-	1
 
 #define TB_PARTICLE_TYPE	uint_fast8_t
@@ -66,6 +65,7 @@ struct toobit_space {
   #if TB_KEEP_TIME == 1
     unsigned int time[TB_TIME_DEPTH];
   #endif
+  char four_bytes[4];
   };
 
 
@@ -74,6 +74,7 @@ struct toobit_space {
 //---------------Funks------------------
 //--------------------------------------
 
+void tb_init_space( struct toobit_space* in_u );
 void tb_heat_death( struct toobit_space* in_u, TB_PARTICLE_TYPE s );
 void tb_big_bang( struct toobit_space* in_u , unsigned int r, TB_PARTICLE_TYPE s);
 
@@ -82,7 +83,7 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 
 #if TB_EASY_PRINT == 1
   void tb_print_space_one_byte( struct toobit_space* in_u );
-  void tb_print_space_quarter_byte( struct toobit_space* in_u );
+  void tb_print_space_quarter_byte_match( struct toobit_space* in_u , char match_char);
 #endif
 
 #if TB_KEEP_TIME == 1
@@ -91,6 +92,6 @@ void tb_time_ticker_3row( struct toobit_space* in_u, unsigned int tc, void (*fun
 
 #if TB_SPEED_TEST == 1
   void tb_speed_test_xy(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, unsigned int, unsigned int ));
-  //void tb_speed_test_3ptr(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int ))
+void tb_speed_test_3ptr(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int ));
 #endif
 
