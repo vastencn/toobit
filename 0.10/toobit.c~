@@ -1,12 +1,7 @@
 //------------------------------------------//
-//	TOOBIT v0.5			    //
+//	TOOBIT v0.10			    //
 //	2d bit space simulation system      //
 //------------------------------------------//
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-
 #include <toobit.h>
 
 #define GOL_EMPTY_CHAR		32
@@ -17,8 +12,8 @@ struct toobit_space the_universe;
 
 //--------------------------------------
 //		game_of_life_rules ()
-//	*,*,* = surrounding space
-//	self = self target id
+//	x/y = x,y cords
+//	t = output target pointer
 //	n = # of neighbours
 //		traditional rules
 //--------------------------------------
@@ -48,7 +43,7 @@ void game_of_life_rules( struct toobit_space* in_u, TB_PARTICLE_TYPE *r0, TB_PAR
 //--------------------------------------
 //		game_of_life_rules_mod ()
 //	x/y = x,y cords
-//	self = self target id
+//	t = output target pointer
 //	n = # of neighbours
 //		modified rules
 //--------------------------------------
@@ -96,24 +91,14 @@ int main() {
 
 
 
+  tb_init_space(&the_universe);				//initialize struct
+  tb_reset_time(&the_universe);				//Reset time to 1
+  tb_heat_death(&the_universe,GOL_FILLED_CHAR);		//flatten the universe to a signle value
+  tb_big_bang(&the_universe,10,GOL_FILLED_CHAR);	//start with a big bang	
+  tb_server_start(&the_universe,8888);			//start the universe server
 
-  tb_init_space(&the_universe);			//initialize struct
-  tb_heat_death(&the_universe,GOL_EMPTY_CHAR);	//flatten the universe to a signle value
-  tb_reset_time(&the_universe);			//Reset time to 1
-
-  tb_big_bang(&the_universe,35,GOL_FILLED_CHAR);	
-
-  int bbsize=35,bbi=5;
   while(1){				//----main loop
-    tb_print_space_quarter_byte_match(&the_universe,GOL_FILLED_CHAR);	//print space to the screen 
-    
-    r_val=random();
-    bbi=r_val&31;
-    while(--bbi){
-      r_val=random();
-      the_universe.space[r_val%TB_SPACE_SIZE_XY]=GOL_FILLED_CHAR;
-      }
-	
+    //tb_print_space_quarter_byte_match(&the_universe,GOL_FILLED_CHAR);	//print space to the screen 
 
     //progress time (universe, # time ticks, pointer to physics function run at every point in space every tick)
     tb_time_ticker_3ptr( &the_universe, 1 , &game_of_life_rules_mod);

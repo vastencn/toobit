@@ -1,0 +1,40 @@
+<html><script language="javascript" type="text/javascript"><!-- 
+var a;
+var x=100, y=100;
+e=document.getElementById("c");
+c=e.getContext("2d");
+i=c.createImageData(x,y);
+
+function ds(){
+  if(a.readyState!=4)return;
+  e=document.getElementById("c");
+  c=e.getContext("2d");
+  i=c.createImageData(x,y);
+  l=a.responseText.length;
+  p=0;
+  while(--l){
+    i.data[p++]=a.responseText.charCodeAt(l);
+    i.data[p++]=a.responseText.charCodeAt(l);
+    i.data[p++]=a.responseText.charCodeAt(l);
+    i.data[p++]=255;
+    }
+  c.putImageData(i, 0, 0);
+  a.open("GET","/r2",true);
+  a.onreadystatechange=ds;
+  setTimeout('a.send(null)',1000);
+  }
+
+function sf(){
+  try{a=new XMLHttpRequest();}
+  catch(e){
+    try{a=new ActiveXObject("Msxml2.XMLHTTP");}
+    catch(e){
+      try{a=new ActiveXObject("Microsoft.XMLHTTP");}
+	catch(e){alert("Your browser sucks!");return false;}
+      }
+    }
+   a.open("GET", "/r2", true);
+   a.onreadystatechange = ds;
+   a.send(null);
+   }
+//--></script><body onload="sf();"><canvas id="c" width="100", height="100"></canvas></body></html>

@@ -17,8 +17,8 @@ struct toobit_space the_universe;
 
 //--------------------------------------
 //		game_of_life_rules ()
-//	x/y = x,y cords
-//	t = output target pointer
+//	*,*,* = surrounding space
+//	self = self target id
 //	n = # of neighbours
 //		traditional rules
 //--------------------------------------
@@ -48,7 +48,7 @@ void game_of_life_rules( struct toobit_space* in_u, TB_PARTICLE_TYPE *r0, TB_PAR
 //--------------------------------------
 //		game_of_life_rules_mod ()
 //	x/y = x,y cords
-//	t = output target pointer
+//	self = self target id
 //	n = # of neighbours
 //		modified rules
 //--------------------------------------
@@ -103,8 +103,18 @@ int main() {
 
   tb_big_bang(&the_universe,35,GOL_FILLED_CHAR);	
 
+  int bbsize=35,bbi=5;
   while(1){				//----main loop
     tb_print_space_quarter_byte_match(&the_universe,GOL_FILLED_CHAR);	//print space to the screen 
+    
+    r_val=random();
+    bbi=r_val&31;
+    while(bbi){
+      r_val=random();
+      the_universe.space[r_val%TB_SPACE_SIZE_XY]=GOL_FILLED_CHAR;
+      bbi--;
+      }
+	
 
     //progress time (universe, # time ticks, pointer to physics function run at every point in space every tick)
     tb_time_ticker_3ptr( &the_universe, 1 , &game_of_life_rules_mod);
