@@ -1,0 +1,111 @@
+#include <sys/time.h>
+
+
+
+//-----------------------------------------------
+// 				tb_speed_test_xy()
+// speed test the xy time ticker using
+// given physics rules
+//-----------------------------------------------
+/////not done
+  void tb_speed_test_xy(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, unsigned int, unsigned int )){
+    float tmp;
+    unsigned int n1b=n1,n2b=n2;
+    unsigned long int s,ms;
+    struct toobit_space tmp_universe;
+    struct timeval tv1,tv2;
+ 
+    memcpy(tmp_universe.space,(*in_u).space,TB_SPACE_UNIVERSE_DATA_SIZE);
+
+    switch(mode){
+      case TB_SPEED_TEST_DEFAULT_MODE:
+        gettimeofday(&tv1,NULL);
+        while(n1--){
+          tb_time_ticker_xy(&tmp_universe, n2, funk_ptr);
+          }
+        gettimeofday(&tv2,NULL); 
+	s=tv2.tv_sec-tv1.tv_sec;
+	if(tv2.tv_usec<tv1.tv_usec){
+	  s--;
+	  ms=(1000000-(tv1.tv_usec%1000000))+(tv2.tv_usec%1000000);
+	  }else{
+	  ms=(tv2.tv_usec-tv1.tv_usec)%1000000;
+	  }     
+	  printf("----------------------------\n");
+	  printf("-------TEST RESULTS---------\n");
+	  printf("Test Type XY");
+	break;
+      default:
+	puts("unknown mode!\n");
+	break;
+      }
+    printf("Time %lu seconds\n",s);
+    printf("Time %lu microseconds\n",ms);   
+    printf("Ran test for %i cycles total\n",n1b*n2b); 
+    printf("    %i Ticks %i Times\n",n1b,n2b);   
+    printf("Universe Size %i\n",TB_SPACE_SIZE_XY);  
+    printf("Total space point calcs\n"); 
+    printf("         %i\n",TB_SPACE_SIZE_XY*(n1b*n2b)); 
+    printf("\n"); 
+    printf("Point Calcs per second\n"); 
+    tmp=(TB_SPACE_SIZE_XY*(n1b*n2b));
+    tmp=tmp/((s*1000000)+ms);
+    printf("     %f\n",tmp*1000000); 
+    printf("----------------------------\n");
+    memcpy((*in_u).space,tmp_universe.space,TB_SPACE_UNIVERSE_DATA_SIZE);//remove later
+    return;
+    }
+
+
+void tb_speed_test_3ptr(char mode, struct toobit_space* in_u, unsigned int n1, unsigned int n2, void (*funk_ptr)(struct toobit_space*, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, TB_PARTICLE_TYPE *, unsigned int )){
+    float tmp;
+    unsigned int n1b=n1,n2b=n2;
+    unsigned long int s,ms;
+    struct toobit_space tmp_universe;
+    struct timeval tv1,tv2;
+    
+    memcpy(tmp_universe.space,(*in_u).space,TB_SPACE_UNIVERSE_DATA_SIZE);
+    memcpy(tmp_universe.space_next,(*in_u).space,TB_SPACE_UNIVERSE_DATA_SIZE);
+
+    switch(mode){
+      case TB_SPEED_TEST_DEFAULT_MODE:
+        gettimeofday(&tv1,NULL);
+        while(n1--){
+          tb_time_ticker_3ptr(&tmp_universe, n2, funk_ptr);
+          }
+        gettimeofday(&tv2,NULL); 
+	s=tv2.tv_sec-tv1.tv_sec;
+	if(tv2.tv_usec<tv1.tv_usec){
+	  s--;
+	  ms=(1000000-(tv1.tv_usec%1000000))+(tv2.tv_usec%1000000);
+	  }else{
+	  ms=(tv2.tv_usec-tv1.tv_usec)%1000000;
+	  }     
+	  printf("----------------------------\n");
+	  printf("-------TEST RESULTS---------\n");
+	  printf("Test Type 3ptr");
+	break;
+      default:
+	puts("unknown mode!\n");
+	break;
+      }
+    printf("Time %lu seconds\n",s);
+    printf("Time %lu microseconds\n",ms);   
+    printf("Ran test for %i cycles total\n",n1b*n2b); 
+    printf("    %i Ticks %i Times\n",n2b,n1b);   
+    printf("Universe Size %i\n",TB_SPACE_SIZE_XY);  
+    printf("Total space point calcs\n"); 
+    printf("         %i\n",TB_SPACE_SIZE_XY*(n1b*n2b)); 
+    printf("\n"); 
+    printf("Point Calcs per second\n"); 
+    tmp=(TB_SPACE_SIZE_XY*(n1b*n2b));
+    tmp=tmp/((s*1000000)+ms);
+    printf("     %f\n",tmp*1000000); 
+    printf("----------------------------\n");
+    memcpy((*in_u).space,tmp_universe.space,TB_SPACE_UNIVERSE_DATA_SIZE);  //remove later
+    return;
+    }
+
+
+
+

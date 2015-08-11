@@ -1,0 +1,122 @@
+<html><script language="javascript" type="text/javascript"><!-- 
+var a;
+var x=0, y=0, d_s=0;
+var tc_ar1=new Array(4000);
+var tc_ar2=new Array(4000);
+var tc_ar3=new Array(4000);
+var mode=0;
+var tc1, tc2, tc3;
+e=document.getElementById("c");
+c=e.getContext("2d");
+i=c.createImageData(x,y);
+
+function ds(){
+  if(a.readyState!=4)return;
+  e=document.getElementById("c");
+  c=e.getContext("2d");
+  l=a.responseText.length;
+  if(l<6){
+    alert("no content");
+    return;
+    }
+  p=0;
+  if(x==0){
+    d_s=a.responseText.charCodeAt(--l);
+    d_s=(d_s*256)+a.responseText.charCodeAt(--l);
+    y=a.responseText.charCodeAt(--l);
+    y=(y*256)+a.responseText.charCodeAt(--l);
+    x=a.responseText.charCodeAt(--l);
+    x=(x*256)+a.responseText.charCodeAt(--l);
+    }else l-=6;
+  i=c.createImageData(x,y);
+  l--;
+  while(--l){
+    tc=a.responseText.charCodeAt(l);
+    switch(mode){
+      case 1:
+        if(tc==42){tc=255;}else{tc=100;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*7)+tc)/8;
+      	tc_ar3[l]=((tc_ar3[l]*31)+tc)/32;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 2:
+        if(tc==42){tc=100;}else{tc=255;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*5)+tc)/6;
+      	tc_ar3[l]=((tc_ar3[l]*7)+tc)/8;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 3:
+        if(tc==42){tc=255;}else{tc=100;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=(tc_ar1[l]+tc)/2;
+      	tc_ar2[l]=(tc_ar2[l]+(tc*2))/3;
+      	tc_ar3[l]=(tc_ar3[l]+(tc*3))/4;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 4:
+        if(tc==42){tc=255;}else{tc=0;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*5)+tc)/6;
+      	tc_ar3[l]=((tc_ar3[l]*7)+tc)/8;
+      	if(tc_ar1[l]<0){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<0){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<0){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      default:
+        if(tc==42){tc=0;}else{tc=255;}
+    	i.data[p++]=tc;
+    	i.data[p++]=tc;
+    	i.data[p++]=tc;
+	break;
+      }
+    i.data[p++]=255;
+    }
+  c.putImageData(i, 0, 0);
+  a.open("GET","/r",true);
+  a.onreadystatechange=ds;
+  a.overrideMimeType('text/plain; charset=iso-8859-1');
+  setTimeout('a.send(null)',30);
+  }
+
+function sm(inm){
+  mode=inm;
+  }
+
+function sf(){
+  try{a=new XMLHttpRequest();}
+  catch(e){
+    try{a=new ActiveXObject("Msxml2.XMLHTTP");}
+    catch(e){
+      try{a=new ActiveXObject("Microsoft.XMLHTTP");}
+	catch(e){alert("Your browser sucks!");return false;}
+      }
+    }
+   a.open("GET", "/r2", true);
+   a.onreadystatechange=ds;
+   a.overrideMimeType('text/plain; charset=iso-8859-1');
+   a.send(null);
+   }
+//--></script><body onload="sf();"><center><canvas id="c" width="1000", height="500"></canvas><br>Mode:<input type="button" value="Default" onclick="sm(0);"/><input type="button" value="1" onclick="sm(1);"/><input type="button" value="2" onclick="sm(2);"/><input type="button" value="3" onclick="sm(3);"/><input type="button" value="4" onclick="sm(4);"/></body></html>

@@ -193,7 +193,7 @@ int ix=100;
       }  
 
     //progress time (universe, # time ticks, pointer to physics function run at every point in space every tick)
-    tb_time_ticker_3row( &the_universe, 1 , &game_of_life_rules2_3row);
+    tb_time_ticker_3row( &the_universe, 1 , &game_of_life_rules_3row);
     usleep(60000);    
     }					//----end main loop
 

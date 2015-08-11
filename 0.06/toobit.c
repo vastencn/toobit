@@ -175,10 +175,10 @@ int main() {
 
   tb_big_bang(&the_universe,25,GOL_FILLED_CHAR);	
 
-  //tb_speed_test_xy(0, &the_universe, 100, 100, &game_of_life_rules);
-  //tb_speed_test_3ptr(0, &the_universe, 100, 100, &game_of_life_rules_3row);
+  tb_speed_test_xy(0, &the_universe, 100, 100, &game_of_life_rules);
+  tb_speed_test_3ptr(0, &the_universe, 100, 100, &game_of_life_rules_3row);
 
-//return;
+return;
 
 int ix=100;
   while(1){				//----main loop
