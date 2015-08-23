@@ -2,24 +2,37 @@
 https://www.youtube.com/playlist?list=PLmSUTHzWYMaNGqxUQunqIu3TbsDL2QnI-
 
 Primary goals so far are
+
 Target : Small cheap ARM systems
+
 Code : Semi-Optimized C Prototype
+
 Application : Server based cellular automation platform
+
 Fields : Visual Effects, Music Visualization, Particle Effects, "Living Server Based Textures' 
+
 Toobit is a Project with documented development.
+
 Video documentation is regularity done and frequent version backups are made as well.
 
 This way the project is either useful as a framework and as a reference for the design of such a platform from scratch.
 
 Features to date:
+
 -function pointer based automation
 (just design the physics as a function and pass that function into the core)
+
 -"Safe" pointer based pre-processing
 (faster access to neighborhood and no need to worry about boundaries)
+
 -Server (Can handle HTTP request)
+
 -Thin Terminal Client (Can deliver and then service a HTML5/Javascript/etc.. client)
+
 -server raw output dump and client injection
+
 -Threading core(lock stepped core of 3 threads to help max out cpu usage..[adjustable thread count coming..])
+
 -Some basics like screen print, speed test, init functions etc..
 
 Future plan.. too many to count but some are
