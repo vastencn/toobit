@@ -1,0 +1,287 @@
+<html><script language="javascript" type="text/javascript"><!-- 
+var a,a1;
+var x=0, y=0, d_s=0;
+var tc_ar1=new Array(4000);
+var tc_ar2=new Array(4000);
+var tc_ar3=new Array(4000);
+var mode=0;
+var tc1, tc2, tc3;
+e=document.getElementById("c");
+c=e.getContext("2d");
+i=c.createImageData(x,y);
+
+function ds(){
+  if(a.readyState!=4)return;
+  e=document.getElementById("c");
+  c=e.getContext("2d");
+  l=a.responseText.length;
+  if(l<6){
+    alert("no content");
+    return;
+    }
+  p=0;
+  if(x==0){
+    d_s=a.responseText.charCodeAt(--l);
+    d_s=(d_s*256)+a.responseText.charCodeAt(--l);
+    y=a.responseText.charCodeAt(--l);
+    y=(y*256)+a.responseText.charCodeAt(--l);
+    x=a.responseText.charCodeAt(--l);
+    x=(x*256)+a.responseText.charCodeAt(--l);
+    }else l-=6;
+  i=c.createImageData(x,y);
+  l--;
+  while(--l){
+    tc=a.responseText.charCodeAt(l);
+    switch(mode){
+      case 1:
+        if(tc==42){tc=255;}else{tc=100;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*7)+tc)/8;
+      	tc_ar3[l]=((tc_ar3[l]*31)+tc)/32;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 2:
+        if(tc==42){tc=100;}else{tc=255;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*5)+tc)/6;
+      	tc_ar3[l]=((tc_ar3[l]*7)+tc)/8;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 3:
+        if(tc==42){tc=255;}else{tc=100;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=(tc_ar1[l]+tc)/2;
+      	tc_ar2[l]=(tc_ar2[l]+(tc*2))/3;
+      	tc_ar3[l]=(tc_ar3[l]+(tc*3))/4;
+      	if(tc_ar1[l]<120){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<120){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<120){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      case 4:
+        if(tc==42){tc=255;}else{tc=0;}
+      	if(!tc_ar1[l]){tc_ar1[l]=0;tc_ar2[l]=0;tc_ar3[l]=0;}
+      	tc_ar1[l]=((tc_ar1[l]*3)+tc)/4;
+      	tc_ar2[l]=((tc_ar2[l]*5)+tc)/6;
+      	tc_ar3[l]=((tc_ar3[l]*7)+tc)/8;
+      	if(tc_ar1[l]<0){tc1=255;}else{tc1=tc_ar1[l];}
+      	if(tc_ar2[l]<0){tc2=255;}else{tc2=tc_ar2[l];}
+      	if(tc_ar3[l]<0){tc3=255;}else{tc3=tc_ar3[l];}
+    	i.data[p++]=tc1;
+    	i.data[p++]=tc2;
+    	i.data[p++]=tc3;
+	break;
+      default:
+        if(tc==42){tc=0;}else{tc=255;}
+    	i.data[p++]=tc;
+    	i.data[p++]=tc;
+    	i.data[p++]=tc;
+	break;
+      }
+    i.data[p++]=255;
+    }
+  c.putImageData(i, 0, 0);
+  a.open("GET","/r",true);
+  a.onreadystatechange=ds;
+  a.overrideMimeType('text/plain; charset=iso-8859-1');
+  setTimeout('a.send(null)',30);
+  }
+
+function sm(inm){
+  mode=inm;
+  }
+
+function sf(){
+  try{a=new XMLHttpRequest();}
+  catch(e){
+    try{a=new ActiveXObject("Msxml2.XMLHTTP");}
+    catch(e){
+      try{a=new ActiveXObject("Microsoft.XMLHTTP");}
+	catch(e){alert("Your browser sucks!");return false;}
+      }
+    }
+  try{a1=new XMLHttpRequest();}
+  catch(e){
+    try{a1=new ActiveXObject("Msxml2.XMLHTTP");}
+    catch(e){
+      try{a1=new ActiveXObject("Microsoft.XMLHTTP");}
+	catch(e){alert("Your browser sucks!");return false;}
+      }
+    }
+   a.open("GET", "/r2", true);
+   a.onreadystatechange=ds;
+   a.overrideMimeType('text/plain; charset=iso-8859-1');
+   a.send(null);
+   }
+//--></script><body onload="sf();">
+<div style="position:absolute; left:0px; top:0px;">
+<table bgcolor=black cellspacing=1><tr><td bgcolor=white>
+ <canvas id="c" width="900", height="500"></canvas>
+</td><td bgcolor=white>
+<table border=0>
+ <tr>
+  <td colspan=4>Mode:<input type="button" value="Default" onclick="sm(0);"/><input type="button" value="1" onclick="sm(1);"/><input type="button" value="2" onclick="sm(2);"/><input type="button" value="3" onclick="sm(3);"/><input type="button" value="4" onclick="sm(4);"/></td>
+ </tr>
+ <tr>
+  <td colspan=4 align=right>
+   <table border=0 cellpadding=0 cellspacing=0>
+    <tr>
+     <td><input type=checkbox name="chk00">
+     <td><input type=checkbox name="chk01">
+     <td><input type=checkbox name="chk02">
+     <td><input type=checkbox name="chk03">
+     <td><input type=checkbox name="chk04">
+    </tr>
+    <tr>
+     <td><input type=checkbox name="chk10">
+     <td><input type=checkbox name="chk11">
+     <td><input type=checkbox name="chk12">
+     <td><input type=checkbox name="chk13">
+     <td><input type=checkbox name="chk14">
+    </tr>
+    <tr>
+     <td><input type=checkbox name="chk20">
+     <td><input type=checkbox name="chk21">
+     <td><input type=checkbox name="chk22">
+     <td><input type=checkbox name="chk23">
+     <td><input type=checkbox name="chk24">
+    </tr>
+    <tr>
+     <td><input type=checkbox name="chk30">
+     <td><input type=checkbox name="chk31">
+     <td><input type=checkbox name="chk32">
+     <td><input type=checkbox name="chk33">
+     <td><input type=checkbox name="chk34">
+    </tr>
+    <tr>
+     <td><input type=checkbox name="chk40">
+     <td><input type=checkbox name="chk41">
+     <td><input type=checkbox name="chk42">
+     <td><input type=checkbox name="chk43">
+     <td><input type=checkbox name="chk44">
+    </tr>
+   </table>
+  </td>
+ </tr>
+ <tr>
+  <td colspan=4 align=right><input type="button" value="begin draw" onclick="injs();"/><input type="button" value="end draw" onclick="inje();"/></td>
+ </tr>
+</table>
+</td></tr></table></td></tr></table></form>
+<script type="text/javascript">
+  var IE = document.all?true:false
+  if (!IE) document.captureEvents(Event.MOUSEMOVE)
+  var tempX = 1, offsetX=1;
+  var tempY = 1, offsetY=1;
+  function getMouseXY(e) {
+    tempX = e.pageX-offsetX;
+    tempY = e.pageY-offsetY;
+    document.Show.MouseX.value = tempX
+    document.Show.MouseY.value = tempY;
+    return true;
+    }
+
+  function mouseClicked(){
+    offsetX=tempX+offsetX;
+    offsetY=tempY+offsetY;
+    document.onmousedown = function (e) {};
+    }
+  function dne(){
+    document.onmousemove = function (e) {};
+    }
+  function aln(){
+    offsetX=offsetY=0;
+    document.onmousemove = function (e) {getMouseXY(e);};
+    document.onmousedown = function (e) {mouseClicked();};
+    }
+
+function inj(e){
+  var injX=e.pageX-offsetX;
+  var injY=e.pageY-offsetY;
+  var dots=new Array(25), doti=0;
+  if(document.Show.chk00.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk01.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk02.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk03.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk04.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk10.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk11.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk12.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk13.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk14.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk20.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk21.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk22.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk23.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk24.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk30.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk31.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk32.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk33.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk34.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk40.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk41.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk42.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+  if(document.Show.chk43.checked){dots[doti++]=42;}else{dots[doti++]=32;} 
+  if(document.Show.chk44.checked){dots[doti++]=42;}else{dots[doti++]=32;}
+
+  var inj_string=new String(
+	"/i5/"+injX+"/"+
+	injY+"/"+
+	dots[0]+"/"+
+	dots[1]+"/"+
+	dots[2]+"/"+
+	dots[3]+"/"+
+	dots[4]+"/"+
+	dots[5]+"/"+
+	dots[6]+"/"+
+	dots[7]+"/"+
+	dots[8]+"/"+
+	dots[9]+"/"+
+	dots[10]+"/"+
+	dots[11]+"/"+
+	dots[12]+"/"+
+	dots[13]+"/"+
+	dots[14]+"/"+
+	dots[15]+"/"+
+	dots[16]+"/"+
+	dots[17]+"/"+
+	dots[18]+"/"+
+	dots[19]+"/"+
+	dots[20]+"/"+
+	dots[21]+"/"+
+	dots[22]+"/"+
+	dots[23]+"/"+
+	dots[24]+"."
+	);
+   //alert(inj_string);
+   a1.open("GET", inj_string, true);
+   a1.onreadystatechange=injr;
+   a1.overrideMimeType('text/plain; charset=iso-8859-1');
+   a1.send(null);
+  }
+function injr(){
+  }
+function injs(){
+  document.onmousedown = function (e) {inj(e);};
+  }
+function inje(){
+  document.onmousedown = function (e) {};
+  }
+        </script>  
+</div>   
+</body></html>
