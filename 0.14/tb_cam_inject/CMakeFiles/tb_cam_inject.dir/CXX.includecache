@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/vasten/Desktop/code/toobit/0.13/tb_cam_inject/tb_cam_inject.cpp
+stdio.h
+-
+iostream
+-
+sys/types.h
+-
+netdb.h
+-
+unistd.h
+-
+stdlib.h
+-
+errno.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
+opencv2/core/core.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+

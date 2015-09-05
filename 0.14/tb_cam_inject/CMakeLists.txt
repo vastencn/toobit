@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( tb_cam_inject )
+find_package( OpenCV REQUIRED )
+add_executable( tb_cam_inject tb_cam_inject.cpp )
+target_link_libraries( tb_cam_inject ${OpenCV_LIBS} )
